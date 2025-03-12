@@ -22,13 +22,13 @@ with DAG(
     print_context = PythonOperator(
         task_id="print_execution_context",
         python_callable=print_execution_context,
-        provide_context=True,  
+        provide_context=True,  # Provide context to the Python function
     )
 
     bash_task = BashOperator(
         task_id="echo_task_message",
-        bash_command="echo '[{{ task.task_id }}] is running in the {{ dag.dag_id }} pipeline'",
+        bash_command="echo '[{{ task_instance.task_id }}] is running in the {{ dag.dag_id }} pipeline'",  # Fixed the template
     )
 
-
+    # Set task dependencies
     print_context >> bash_task
