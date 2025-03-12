@@ -1,17 +1,29 @@
 from datetime import datetime
-
 from airflow.models import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-with DAG(
-    dag_id="Welcome",
-    start_date=datetime(year=2025, month=1, day=1),
-    end_date=datetime(year=2030, month=1, day=5),
-    schedule="@daily",
-):
-    welcome = BashOperator(task_id="welkom terug", bash_command="echo 'hello'")
-    
-    monika = PythonOperator(task_id="welcome monika", python_callable=lambda: print("monika"))
+# Define a proper Python function
+def print_message():
+    print("monika")
 
-    welcome >> monika
+# Define the DAG
+with DAG(
+    dag_id="welcome",  # Changed to lowercase
+    start_date=datetime(2025, 1, 1),
+    end_date=datetime(2030, 1, 5),
+    schedule="@daily",
+    catchup=False,  # Avoid unnecessary backfills
+):
+    welcome = BashOperator(
+        task_id="welkom_terug",  # Changed task ID (no spaces)
+        bash_command="echo 'hello'"
+    )
+    
+    monika = PythonOperator(
+        task_id="welcome_monika",  # Changed task ID (no spaces)
+        python_callable=print_message  # Referencing a proper function
+    )
+
+    welcome >> monika  # Task dependency
+
