@@ -27,8 +27,8 @@ with DAG(
 
     bash_task = BashOperator(
         task_id="echo_task_message",
-        bash_command="echo '[{{ task_instance.task_id }}] is running in the {{ dag.dag_id }} pipeline'",  # Fixed the template
+        bash_command="echo '[{{ task_instance.task_id }}] is running in the {{ dag.dag_id }} pipeline'",  
     )
 
-    # Set task dependencies
+   
     print_context >> bash_task
