@@ -6,9 +6,9 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 
 # Define the function to print the execution context
-def print_execution_context(**):
+def print_execution_context(**kwargs):
     pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint()
+    pp.pprint(kwargs)
 
 # Define the DAG and its tasks
 with DAG(
