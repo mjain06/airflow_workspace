@@ -13,3 +13,5 @@ with DAG(
     welcome = BashOperator(task_id="welkom terug", bash_command="echo 'hello'")
     
     monika = PythonOperator(task_id="welcome monika", python_callable=lambda: print("monika"))
+
+    welcome >> monika
