@@ -6,7 +6,7 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 
 # Define the function to print the execution context
-def print_execution_context():
+def print_execution_context(**):
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint()
 
@@ -30,5 +30,5 @@ with DAG(
         bash_command="echo '[{{ task_instance.task_id }}] is running in the DAG pipeline'",
     )
 
-    # Set task dependencies
+
     print_context >> bash_task
