@@ -2,8 +2,15 @@ from datetime import datetime
 
 from airflow.models import DAG
 from airflow.operators.empty import EmptyOperator
-# from airflow.operators.python import PythonOperator
+from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
+import pprint
 
+ def print_execution_context(**):
+    """Print the entire Airflow execution context using pprint."""
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint()
+    
 with DAG(
     dag_id="dag_rocket",
     start_date=datetime(year=2019, month=1, day=1),
@@ -20,3 +27,21 @@ with DAG(
 
     procure_rocket_material >>  [build_stage1, build_stage2, build_stage3] >> launch
     procure_fail >> build_stage3 >> launch
+    
+   
+
+    print_context = PythonOperator(
+        task_id="print_execution_context",
+        python_callable=print_execution_context,
+        provide_context=True,  
+    )
+
+    print_context
+    
+ 
+    bash_task = BashOperator(
+        task_id="echo_task_message",
+        bash_command="echo '[{{ task_instance.task_id }}] is running in the DAG pipeline'",
+    )
+
+    print_context >> bash_task
