@@ -10,13 +10,13 @@ with DAG(
     end_date=datetime(year=2019, month=1, day=5),
     schedule="@daily",
 ):
-    task1 = EmptyOperator(task_id="procure_rocket_material")
-    task2 = EmptyOperator(task_id="procure_fail")
-    task3 = EmptyOperator(task_id="build_stage1")
-    task4 = EmptyOperator(task_id="build_stage2")
-    task5 = EmptyOperator(task_id="build_stage3")
-    task6 = EmptyOperator(task_id="launch")
+    procure_rocket_material = EmptyOperator(task_id="procure_rocket_material")
+    procure_fail = EmptyOperator(task_id="procure_fail")
+    build_stage1 = EmptyOperator(task_id="build_stage1")
+    build_stage2 = EmptyOperator(task_id="build_stage2")
+    build_stage3 = EmptyOperator(task_id="build_stage3")
+    launch = EmptyOperator(task_id="launch")
     
 
-    task1 >>  [task3 , task4, task5] >> task6
-    task2 >> [task5] >> task6
+    procure_rocket_material >>  [build_stage1, build_stage2, build_stage3] >> launch
+    procure_fail >> build_stage3 >> launch
