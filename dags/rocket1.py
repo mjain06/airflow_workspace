@@ -37,7 +37,7 @@ API_URL = "https://lldev.thespacedevs.com/2.2.0/launch/"
   
 with DAG(
     dag_id="rocket_launching",
-    start_date=datetime(year=2025, month=3, day=3) - timedelta(days=10),
+    start_date=datetime(year=2025, month=3, day=3),
     schedule="@daily",
 ):
     
