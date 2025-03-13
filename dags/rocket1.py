@@ -4,7 +4,8 @@ from airflow.models import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
-from airflow.contrib.sensors.http_sensor import HTTPSensor
+from airflow.providers.http.sensors.http import HttpSensor
+from airflow.providers.http.operators.http import SimpleHttpOperator
 
 
 API_URL = "https://lldev.thespacedevs.com/2.2.0/launch/"
