@@ -51,11 +51,9 @@ with DAG(
     http_conn_id="thespacedevs_api",
     endpoint="",
     method="GET",
-    data={"window_start": (datetime.utcnow() - timedelta(days=60)).isoformat(), "limit": 100},
+    data={"window_start__gte": (datetime.utcnow() - timedelta(days=60)).isoformat(), "limit": 100},
     response_filter=lambda response: response.text,
-    response_check=lambda response: response.status_code == 200,
-    poke_interval=60, 
-    timeout=600, 
+    response_check=lambda response: response.status_code == 200, 
 )
     check_api >> get_launches
 
