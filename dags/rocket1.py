@@ -49,7 +49,6 @@ with DAG(
     response_check=lambda response: response.status_code == 200,
     poke_interval=60,  # Check every 60 seconds
     timeout=600,  # Timeout after 10 minutes
-    dag=dag,
 )
     
     check_api
