@@ -10,10 +10,6 @@ from airflow.providers.http.operators.http import SimpleHttpOperator
 
 API_URL = "https://lldev.thespacedevs.com/2.2.0/launch/"
 
-# wait_for_data = FTPSensor(
-#     task_id="wait_for_data",
-#     path="foobar.json",
-#     ftp_conn_id="bob_ftp",
 
 # def fetch_launch_data(**kwargs):
 #     today = datetime.utcnow().date()
@@ -47,11 +43,21 @@ with DAG(
     endpoint="",
     method="GET",
     response_check=lambda response: response.status_code == 200,
-    poke_interval=60,  # Check every 60 seconds
-    timeout=600,  # Timeout after 10 minutes
+    poke_interval=60, 
+    timeout=600, 
 )
-    
-    check_api
+    get_launches = SimpleHttpOperator(
+    task_id="fecth_data",
+    http_conn_id="thespacedevs_api",
+    endpoint="",
+    method="GET",
+    data={"window_start": (datetime.utcnow() - timedelta(days=60)).isoformat(), "limit": 100},
+    response_filter=lambda response: response.text,
+    response_check=lambda response: response.status_code == 200,
+    poke_interval=60, 
+    timeout=600, 
+)
+    check_api >> get_launches
 
 #     fetch_data = PythonOperator(
 #     task_id="fetch_data_task",
