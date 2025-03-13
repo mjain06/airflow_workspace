@@ -40,4 +40,11 @@ with DAG(
     schedule="@daily",
 ):
 
+
+    fetch_data = PythonOperator(
+    task_id="fetch_data_task",
+    python_callable=fetch_launch_data
+)
+
+
   
