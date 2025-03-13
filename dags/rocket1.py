@@ -51,9 +51,12 @@ with DAG(
     http_conn_id="thespacedevs_api",
     endpoint="",
     method="GET",
-    data={"window_start__gte": (datetime.utcnow() - timedelta(days=60)).isoformat(), "limit": 100},
-    response_filter=lambda response: response.text,
-    response_check=lambda response: response.status_code == 200, 
+    response_filter=lambda response: response.text, 
+    log_response=True,
+    do_xcom_push=True,
+    # data={"window_start__gte": (datetime.utcnow() - timedelta(days=60)).isoformat(), "limit": 100},
+    # response_filter=lambda response: response.text,
+    # response_check=lambda response: response.status_code == 200, 
 )
     check_api >> get_launches
 
